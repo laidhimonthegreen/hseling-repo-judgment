@@ -60,7 +60,16 @@ P {
 }
 input{
     padding:5px 15px; 
-	color: white;
+	color: black;
+    background: #white;  
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+	font-family: Verdana, sans-serif;
+} 
+input[type=number]{
+    padding:5px 15px; 
+	color: black;
     background: #white;  
     cursor:pointer;
     -webkit-border-radius: 5px;
