@@ -9,7 +9,10 @@
 <h2 align="center">Поиск документов</h2>
 <form action="/" method="get" align="center">
     Судья: <input type="text" name="judge" value="{{judge}}" />
-    Год: <input type="number" name="year" value="{{year}}" min="2018"/>
+    Год: <select name="year">
+  <option>2018</option>
+  <option>2019</option> 
+</select>
     Статья: <input type="text" name="article" value="{{article}}" />
     Регион: <select name="region">
             <option value=""></option>
