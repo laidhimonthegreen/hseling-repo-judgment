@@ -50,12 +50,34 @@ def search(req: HttpRequest):
 
 def doc(req: HttpRequest, doc_id: int):
     data = requests.get(f'{front}/documents/{doc_id}').json()
-    meta = {i: data["metadata"][i] for i in ["article", "region", "court", "date", "number", "judge", "accused"]
-            if i in data["metadata"]}
-    if isinstance(meta['accused'], list):
-        meta['accused'] = ', '.join(meta['accused'])
-    pars = {i: data["parsed"][i] for i in ["fabula", "meditation", "prove", "witness"] if i in data["parsed"]}
+    metadata_titles = [
+        ["article", 'статья'],
+        ["region", 'регион'],
+        ["court", 'суд'],
+        ["date", 'дата'],
+        ["number", 'номер'],
+        ["judge", 'судья'],
+        ["accused", 'обвиняемый']
+    ]
+    metadata = data["metadata"]
+    meta = {rus_title: metadata[title] for title, rus_title in metadata_titles if title in metadata}
+
+    if meta['обвиняемый'] and isinstance(meta['обвиняемый'], list):
+        meta['обвиняемый'] = ', '.join(meta['обвиняемый'])
+
+    parts_titles = [
+        ["fabula", "Фабула"],
+        ["meditation", "Размышления судьи"],
+        ["prove", "Доказательства"],
+        ["witness", "Показания свидетелей"]
+    ]
+
+    parsed_data = data["parsed"]
+    pars = {rus_title: parsed_data[title] for title, rus_title in parts_titles if title in parsed_data}
     download_link = f'http://localhost:3000/documents/{doc_id}/download'
 
-    return render(req, 'lawdoc.html', {"pars": pars, "url": data["url"], "meta": meta,
-                                       "header": data["header"], "download_link": download_link})
+    return render(
+        req,
+        'lawdoc.html',
+        {"pars": pars, "url": data["url"], "meta": meta, "header": data["header"], "download_link": download_link}
+    )
