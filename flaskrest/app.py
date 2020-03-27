@@ -72,6 +72,7 @@ def list_regions():
     cursor.execute('select distinct(region) from metadata')
     regions = [item for item, in cursor]
     cursor.close()
+    regions.sort()
     return jsonify(regions)
 
 
