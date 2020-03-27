@@ -88,7 +88,7 @@ def get_documents():
     '''
 
     selector = ''' d.id id, d.header header, d.url url, m.date date, m.number number, m.court court, m.region region,
-    m.judge judge, m.article article, m.accused accused
+    m.judge judge, m.article article, m.accused accused, m.fabula fabula, m.witness witness, m.prove prove, m.meditation meditation
     '''
 
     page_size = int(request.args.get('page_size', 20))
