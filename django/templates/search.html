@@ -1,10 +1,13 @@
+<!DOCTYPE html>
+{% load static %}
 <html>
 <head>
-<title>Парсер решений судов</title>
+<link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
+<title>Парсер решений судов</title> 
 </head>
 <body>
-<h2>Поиск документов</h2>
-<form action="/" method="get">
+<h2 align="center">Поиск документов</h2>
+<form action="/" method="get" align="center">
     Судья: <input type="text" name="judge" value="{{judge}}" />
     Год: <input type="number" name="year" value="{{year}}" min="2018"/>
     Статья: <input type="text" name="article" value="{{article}}" />
