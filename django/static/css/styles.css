@@ -16,6 +16,9 @@ H2 {
   font-size: 180%;
   font-family: Verdana, sans-serif;
 }
+th {
+    cursor: pointer; 
+}
 select {   
 	background: white;
 	padding:5px 15px; 
