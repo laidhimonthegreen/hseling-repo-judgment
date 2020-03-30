@@ -1,0 +1,6 @@
+/sudact_database/sudact.sqlite
+__pycache__/
+*.log
+*.pyc
+*.DS_Store
+.idea/
