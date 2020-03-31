@@ -1,5 +1,7 @@
 import io
+import os
 import sqlite3
+import tempfile
 
 import pandas as pd
 from flask import Flask, jsonify, abort, request, send_file
@@ -11,7 +13,6 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 
 db = sqlite3.connect('sudact.sqlite', check_same_thread=False)
-
 
 def get_law_data(db_id: int):
     sql = '''select id, name, url from uk_sections
@@ -71,54 +72,69 @@ def list_regions():
     cursor = db.cursor()
     cursor.execute('select distinct(region) from metadata order by 1')
     regions = [item for item, in cursor]
-    cursor.close() 
+    cursor.close()
     return jsonify(regions)
-	
-	
-@app.route('/documents/', methods=['GET'])
-def get_documents():
-    sql = '''select {selector}
-    from documents d
-    join metadata m on m.document_id=d.id
-    where substr(m.date, 1, 4) like :year
-     and m.region like :region
-     and m.article like :article
-     and judge like :judge
-    order by d.id
-    '''
 
-    selector = ''' d.id id, d.header header, d.url url, m.date date, m.number number, m.court court, m.region region,
-    m.judge judge, m.article article, m.accused accused, m.fabula fabula, m.witness witness, m.prove prove, m.meditation meditation
-    '''
+
+def get_params():
 
     page_size = int(request.args.get('page_size', 20))
     page_num = int(request.args.get('page_num', 1))
 
     params = {
         'limit': page_size,
-        'offset': (page_num - 1)*page_size,
+        'offset': (page_num - 1) * page_size,
         'year': request.args.get('year', '%'),
         'region': request.args.get('region', '%'),
         'article': f'%{request.args.get("article", "")}%',
         'judge': f'%{request.args.get("judge", "")}%'
     }
 
+    return page_size, page_num, params
+
+
+def query_sql(params, batches=True):
+
+    sql = '''select {selector}
+        from documents d
+        join metadata m on m.document_id=d.id
+        where substr(m.date, 1, 4) like :year
+         and m.region like :region
+         and m.article like :article
+         and judge like :judge
+        order by d.id
+        '''
+
+    selector = ''' d.id id, d.header header, d.url url, m.date date, m.number number, m.court court, m.region region,
+        m.judge judge, m.article article, m.accused accused, m.fabula fabula, m.witness witness, m.prove prove, 
+        m.meditation meditation
+        '''
+
     cursor = db.cursor()
 
     cursor.execute(sql.format(selector='count(*) as count'), params)
-    size,  = cursor.fetchone()
+    size, = cursor.fetchone()
 
-    sql += ' limit :limit offset :offset'
+    if batches:
+        sql += ' limit :limit offset :offset'
+
     cursor.execute(sql.format(selector=selector), params)
     column_names = [desc[0] for desc in cursor.description]
+    # cursor.close()
+    return size, [dict(zip(column_names, item)) for item in cursor.fetchall()]
+
+
+@app.route('/documents/', methods=['GET'])
+def get_documents():
+    page_size, page_num, params = get_params()
+
+    size, query = query_sql(params)
 
     res = {
         'page_num': page_num,
         'pages': (size-1) // page_size + 1,
-        'documents': [dict(zip(column_names, item)) for item in cursor.fetchall()]
+        'documents': query
     }
-
-    cursor.close()
 
     return jsonify(res)
 
@@ -135,6 +151,23 @@ def get_law(law_id: int):
 @app.route('/documents/<int:doc_id>')
 def parse_doc(doc_id):
     return jsonify(parse_document(doc_id))
+
+
+@app.route('/documents/download')
+def download_files():
+    params = get_params()[-1]
+
+    columns = ['id', 'Заголовок', 'Ссылка', 'Дата', 'Номер дела', 'Суд', 'Регион',
+               'Судья', 'Статья', 'Обвиняемый', 'Фабула', 'Показания свидетелей',
+               'Описание доказательств', 'Размышления судьи']
+    res = pd.DataFrame(query_sql(params, batches=False)[1])
+    res.columns = columns
+    res = res.drop('id', axis=1)
+    tmp_dir = tempfile.mkdtemp()
+    base_name = 'судебная_практика.xlsx'
+    filename = os.path.join(tmp_dir, base_name)
+    res.to_excel(filename, index=False)
+    return send_file(filename, attachment_filename=base_name, as_attachment=True, cache_timeout=-1)
 
 
 @app.route('/documents/<int:doc_id>/download')

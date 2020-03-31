@@ -1,14 +1,13 @@
-<!DOCTYPE html>
 {% load static %}
 <html>
 <head>
 <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
 <script type="text/javascript" href="{% static 'js/sort.js' %}"></script>
-<title>Парсер решений судов</title> 
+<title>Парсер решений судов</title>
 </head>
 <body>
-<h2 align="center">Поиск документов</h2>
-<form action="/" method="get" align="center">
+<h2>Поиск документов</h2>
+<form action="/" method="get">
     Судья: <input type="text" name="judge" value="{{judge}}" />
     Год: <select name="year">
   <option disabled selected>Выберите год</option>
@@ -39,6 +38,7 @@
         <input type="checkbox" onclick="toggle(this.checked, 'prove')"> Доказательства
         <input type="checkbox" onclick="toggle(this.checked, 'meditation')"> Размышления судьи
     </p>
+    <button onclick="window.location.href = '{{ download_link }}';">Скачать найденные документы</button>
     <div style="text-align: center; margin-bottom: 20px;">
         {% for num, url in pages %}
             <span style="margin: 3px;">
