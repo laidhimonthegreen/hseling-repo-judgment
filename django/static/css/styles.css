@@ -1,0 +1,99 @@
+BODY {
+  background: #E5E8E1;
+  font-family: Verdana, sans-serif;
+  margin-left: 30px;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+}
+H1 {
+  color: #4A444A;
+  font-size: 200%;
+  font-family: Verdana, sans-serif;
+}
+H2 {
+  color: #4A444A;
+  font-size: 180%;
+  font-family: Verdana, sans-serif;
+}
+th {
+    cursor: pointer; 
+}
+select {   
+	background: white;
+	padding:5px 15px; 
+	cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+	font-family: Verdana, sans-serif;
+}
+H3 {
+  color: #4A444A;
+  font-size: 120%;
+  font-family: Verdana, sans-serif; 
+}
+a:link {
+    color: #4d8489; /* Цвет ссылок */
+   }
+a:visited {
+    color: #b66164; /* Цвет посещенных ссылок */
+   }
+form {
+    margin: 0 auto;
+	color: 4A444A;
+    max-width: 95%;
+    padding: 10px 10px 6px 10px;
+	background: 85A7AA; 
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box; 
+    overflow: hidden; 
+}
+table{
+	border-collapse: collapse;
+	padding: 10 px;
+}
+P {
+  padding-left: 20px;
+  font-family: Verdana, sans-serif; 
+  color: #42404c;
+}
+input{
+    padding:5px 15px; 
+	color: black;
+    background: #white;  
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+	font-family: Verdana, sans-serif;
+} 
+input[type=number]{
+    padding:5px 15px; 
+	color: black;
+    background: #white;  
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+	font-family: Verdana, sans-serif;
+} 
+input[type=submit]{
+    padding:5px 15px; 
+	color: white;
+    background: #346365;  
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+	font-family: Verdana, sans-serif;
+} 
+button {
+    padding:5px 15px; 
+    background: #346365;
+	color: white;	
+    cursor:pointer;
+    -webkit-border-radius: 5px;
+    border-radius: 5px; 
+	font-family: Verdana, sans-serif;
+} 
