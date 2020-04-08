@@ -21,6 +21,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    path('', views.search, name='search'),
-    path(r'doc<int:doc_id>', views.doc, name='doc')
+    path('search', views.search, name='search'),
+    path(r'doc<int:doc_id>', views.doc, name='doc'),
+    path('', views.home, name='home'),
+    path('home', views.home, name='home'),
 ] + static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS)
