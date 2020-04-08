@@ -1,13 +1,36 @@
-const getCellValue = (tr, idx) => tr.children[idx].innerText || tr.children[idx].textContent;
-
-const comparer = (idx, asc) => (a, b) => ((v1, v2) => 
-    v1 !== '' && v2 !== '' && !isNaN(v1) && !isNaN(v2) ? v1 - v2 : v1.toString().localeCompare(v2)
-    )(getCellValue(asc ? a : b, idx), getCellValue(asc ? b : a, idx));
-
-// do the work...
-document.querySelectorAll('th').forEach(th => th.addEventListener('click', (() => {
-  const table = th.closest('table');
-  const tbody = table.querySelector('tbody');
-  Array.from(tbody.querySelectorAll('tr'))
-    .sort(comparer(Array.from(th.parentNode.children).indexOf(th), this.asc = !this.asc))
-    .forEach(tr => tbody.appendChild(tr) );
+w3.sortHTML = function(id, sel, sortvalue) {
+  var a, b, i, ii, y, bytt, v1, v2, cc, j;
+  a = w3.getElements(id);
+  for (i = 0; i < a.length; i++) {
+    for (j = 0; j < 2; j++) {
+      cc = 0;
+      y = 1;
+      while (y == 1) {
+        y = 0;
+        b = a[i].querySelectorAll(sel);
+        for (ii = 0; ii < (b.length - 1); ii++) {
+          bytt = 0;
+          if (sortvalue) {
+            v1 = b[ii].querySelector(sortvalue).innerText;
+            v2 = b[ii + 1].querySelector(sortvalue).innerText;
+          } else {
+            v1 = b[ii].innerText;
+            v2 = b[ii + 1].innerText;
+          }
+          v1 = v1.toLowerCase();
+          v2 = v2.toLowerCase();
+          if ((j == 0 && (v1 > v2)) || (j == 1 && (v1 < v2))) {
+            bytt = 1;
+            break;
+          }
+        }
+        if (bytt == 1) {
+          b[ii].parentNode.insertBefore(b[ii + 1], b[ii]);
+          y = 1;
+          cc++;
+        }
+      }
+      if (cc > 0) {break;}
+    }
+  }
+};
