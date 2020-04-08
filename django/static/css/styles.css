@@ -37,7 +37,7 @@ a:link {
    }
 a:visited {
     color: #b66164; /* Цвет посещенных ссылок */
-   }
+   } 
 form {
     margin: 0 auto;
 	color: 4A444A;
@@ -59,8 +59,15 @@ table{
 P {
   padding-left: 20px;
   font-family: Verdana, sans-serif; 
-  color: #42404c;
-}
+  color: #4A444A;
+  line-height: 0.9;
+} 
+p {
+  padding-left: 20px;
+  font-family: Verdana, sans-serif; 
+  color: #4A444A;
+  line-height: 1.2;
+} 
 input{
     padding:5px 15px; 
 	color: black;

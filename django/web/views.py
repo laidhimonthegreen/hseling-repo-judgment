@@ -11,7 +11,7 @@ front = "http://back:3000"
 def update_page_num(params: dict, page_num: int):
     params = params.copy()
     params['page_num'] = page_num
-    return '?' + urlencode(params)
+    return 'search?' + urlencode(params)
 
 
 # @csrf_exempt
@@ -84,3 +84,6 @@ def doc(req: HttpRequest, doc_id: int):
         'lawdoc.html',
         {"pars": pars, "url": data["url"], "meta": meta, "header": data["header"], "download_link": download_link}
     )
+
+def home(req: HttpRequest):
+	return render(req, "home.html")

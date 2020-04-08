@@ -2,14 +2,14 @@
 <html>
 <head>
 <link rel="stylesheet" href="{% static 'css/styles.css' %}"/>
-<script type="text/javascript" href="{% static 'js/sort.js' %}"></script>
+<script src="{% static 'js/w3_functions.js' %}"></script>
 <title>Парсер решений судов</title>
 </head>
 <body>
-<h2>Поиск документов</h2>
-<form action="/" method="get">
+<h2 style = "margin-left: 20 px">Поиск документов</h2>
+<form action="/search" method="get" style="margin-left: 0px;"> 
     Судья: <input type="text" name="judge" value="{{judge}}" />
-    Год: <select name="year">
+    Год: <select name="year"> 
   <option disabled selected>Выберите год</option>
   <option>2018</option>
   <option>2019</option> 
@@ -23,22 +23,25 @@
     >{{ name }}</option>
 {% endfor %}
         </select>
-<input type="submit" value="Искать" />
+<input type="submit" value="Искать" /> 
 </form>
 
-{% if documents %}
+{% if documents %} 
     <p>
         <script>
             function toggle(show, className){
             [].forEach.call(document.getElementsByClassName(className), (item) => {item.style.display = show?'table-cell':'none'});
             };
         </script>
-        <input type="checkbox" onclick="toggle(this.checked, 'fabula')"> Фабула
+		<div style="margin-left: 0px;">
+		<input type="checkbox" onclick="toggle(this.checked, 'fabula')"> Фабула
         <input type="checkbox" onclick="toggle(this.checked, 'witness')"> Показания свидетелей
         <input type="checkbox" onclick="toggle(this.checked, 'prove')"> Доказательства
-        <input type="checkbox" onclick="toggle(this.checked, 'meditation')"> Размышления судьи
+        <input type="checkbox" onclick="toggle(this.checked, 'meditation')"> Размышления судьи		
+		<button onclick="window.location.href = '{{ download_link }}';">Скачать найденные документы</button>
+		</div>
     </p>
-    <button onclick="window.location.href = '{{ download_link }}';">Скачать найденные документы</button>
+    
     <div style="text-align: center; margin-bottom: 20px;">
         {% for num, url in pages %}
             <span style="margin: 3px;">
@@ -50,7 +53,7 @@
             </span>
         {% endfor %}
     </div>
-    <table border="1">
+    <table border="1" id="myTable">
         <thead>
             <tr>
                 <th>Документ</th>
@@ -61,16 +64,16 @@
                 <th>Регион</th>
                 <th>Суд</th>
                 <th>Дело</th>
-                <th>Судья</th>
+				<th onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(9)')" style="cursor:pointer">Судья &#8645;</th> 
                 <th>Обвиняемый</th>
-                <th>Дата</th>
+                <th onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(11)')" style="cursor:pointer">Дата &#8645;</th> 
                 <th>Статьи</th>
                 <th>Ссылка</th>
             </tr>
         </thead>
         <tbody>
             {% for item in documents %}
-                <tr>
+                <tr class="item">
                     <td><a href="/doc{{ item.id }}">{{item.header}}</a></td>
                     <td style="display: none;" class="fabula">{{item.fabula}}</td>
                     <td style="display: none;" class="witness">{{item.witness}}</td>
