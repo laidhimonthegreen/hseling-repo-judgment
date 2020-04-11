@@ -78,7 +78,7 @@ def list_regions():
 
 def get_params():
 
-    page_size = int(request.args.get('page_size', 20))
+    page_size = int(request.args.get('page_size', 50))
     page_num = int(request.args.get('page_num', 1))
 
     params = {
